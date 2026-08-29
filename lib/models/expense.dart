@@ -25,11 +25,11 @@ class Expense {
 
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
-      id: json['id'],
-      title: json['title'],
+      id: json['id'] as String,
+      title: json['title'] as String,
       amount: (json['amount'] as num).toDouble(),
-      category: json['category'],
-      date: DateTime.parse(json['date']),
+      category: json['category'] as String,
+      date: DateTime.parse(json['date'] as String),
     );
   }
 }

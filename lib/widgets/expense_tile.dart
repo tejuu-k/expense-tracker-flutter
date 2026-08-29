@@ -21,8 +21,6 @@ class ExpenseTile extends StatelessWidget {
         return Icons.shopping_bag_rounded;
       case 'Bills':
         return Icons.receipt_long_rounded;
-      case 'Entertainment':
-        return Icons.movie_rounded;
       default:
         return Icons.category_rounded;
     }
@@ -30,81 +28,87 @@ class ExpenseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.indigo.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Icon(
-              getCategoryIcon(),
-              color: Colors.indigo,
-            ),
-          ),
+    final primaryColor =
+        Theme.of(context).colorScheme.primary;
 
-          const SizedBox(width: 14),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 10,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: primaryColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Icon(
+                getCategoryIcon(),
+                color: primaryColor,
+              ),
+            ),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(width: 14),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    expense.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 5),
+
+                  Text(
+                    '${expense.category} • '
+                    '${expense.date.day}/'
+                    '${expense.date.month}/'
+                    '${expense.date.year}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.end,
               children: [
                 Text(
-                  expense.title,
+                  '- ₹${expense.amount.toStringAsFixed(0)}',
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  '${expense.category} • '
-                  '${expense.date.day}/${expense.date.month}/${expense.date.year}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
+
+                const SizedBox(height: 4),
+
+                GestureDetector(
+                  onTap: onDelete,
+                  child: Icon(
+                    Icons.delete_outline_rounded,
+                    size: 20,
+                    color: Colors.grey.shade500,
                   ),
                 ),
               ],
             ),
-          ),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '- ₹${expense.amount.toStringAsFixed(0)}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-              IconButton(
-                onPressed: onDelete,
-                icon: const Icon(
-                  Icons.delete_outline_rounded,
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
